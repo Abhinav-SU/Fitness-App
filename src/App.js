@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React V1
+          fitness app V1
         </a>
       </header>
     </div>
