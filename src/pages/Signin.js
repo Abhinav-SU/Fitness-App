@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Divider from "../components/Divider";
-// import { useAuth } from "../contexts/auth/AuthContext";
+import { useAuth } from "../contexts/auth/authContext.js";
 
 function Signin() {
-//   const { signIn, signInWithGoogle, resetPassword } = useAuth();
+  const { signIn, signInWithGoogle, resetPassword } = useAuth();
   const navigate = useNavigate();
 
   const initialValues = { email: "", password: "" };
@@ -21,57 +21,57 @@ function Signin() {
     setValues({ ...values, [name]: value });
   };
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const { email, password } = values;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = values;
 
-//     if (!email || !password) {
-//       return setError("Please fill in all fields");
-//     }
+    if (!email || !password) {
+      return setError("Please fill in all fields");
+    }
 
-//     try {
-//       setLoading(true);
-//       await signIn(email, password);
-//       navigate("/");
-//     } catch (error) {
-//       setError(error.message);
-//     } finally {
-//       setGoogleLoading(false);
-//     }
-//   };
+    try {
+      setLoading(true);
+      await signIn(email, password);
+      navigate("/");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
-//   const handleGoogleSignIn = async () => {
-//     try {
-//       setGoogleLoading(true);
-//       await signInWithGoogle();
-//       navigate("/");
-//     } catch (error) {
-//       setError(error.message);
-//     } finally {
-//       setGoogleLoading(false);
-//     }
-//   };
+  const handleGoogleSignIn = async () => {
+    try {
+      setGoogleLoading(true);
+      await signInWithGoogle();
+      navigate("/");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
-//   const handlePassword = async () => {
-//     setMessage(null);
-//     setError(null);
+  const handlePassword = async () => {
+    setMessage(null);
+    setError(null);
 
-//     const { email } = values;
+    const { email } = values;
 
-//     if (!email) {
-//       return setError("Please enter an email first");
-//     }
+    if (!email) {
+      return setError("Please enter an email first");
+    }
 
-//     try {
-//       setLoading(true);
-//       await resetPassword(email);
-//       setMessage("Successfully sent email reset link");
-//     } catch (error) {
-//       setError(error.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+    try {
+      setLoading(true);
+      await resetPassword(email);
+      setMessage("Successfully sent email reset link");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="lg:max-w-xl lg:p-0 lg:space-y-10 p-6 w-full bg-white space-y-6">
@@ -95,7 +95,7 @@ function Signin() {
             handleChange={handleChange}
           />
           <div
-            // onClick={handlePassword}
+            onClick={handlePassword}
             className="flex justify-end text-sm text-primary cursor-pointer"
           >
             Forgot password?
@@ -107,8 +107,8 @@ function Signin() {
           value="Sign In"
           type="submit"
           variant="primary"
-         // action={handleSubmit}
-         // loading={loading}
+         action={handleSubmit}
+         loading={loading}
           fullWidth
         />
       </form>
@@ -117,8 +117,8 @@ function Signin() {
         value="Sign in with Google"
         type="submit"
         variant="frame"
-       // action={handleGoogleSignIn}
-       // loading={googleLoading}
+       action={handleGoogleSignIn}
+        loading={googleLoading}
         fullWidth
       />
       <div className="text-primary text-center">

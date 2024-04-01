@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import Button from "../components/Button";
-
+import { useAuth } from "../contexts/auth/authContext";
 
 function Singup() {
+  const { signUp } = useAuth();
 
   const navigate = useNavigate();
 
@@ -18,6 +19,24 @@ function Singup() {
     setValues({ ...values, [name]: value });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = values;
+
+    if (!email || !password) {
+      return setError("Please fill in all fields");
+    }
+
+    try {
+      setLoading(true);
+      await signUp(email, password);
+      navigate("/");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (
@@ -45,7 +64,8 @@ function Singup() {
           value="Sign Up"
           type="submit"
           variant="primary"
-
+          action={handleSubmit}
+          loading={loading}
           fullWidth
         />
       </form>

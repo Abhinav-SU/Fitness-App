@@ -6,6 +6,7 @@ import {
   Routes,
 } from "react-router-dom";
 import Signin from "./pages/Signin";
+import AuthProvider, { useAuth } from "./contexts/auth/authContext";
 
 
 import SigninLayout from "./layouts/SigninLayout";
@@ -13,6 +14,19 @@ import SigninLayout from "./layouts/SigninLayout";
 
 import Singup from "./pages/Signup";
 
+function PrivateRoute({ layout: Layout, page: Page }) {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Navigate to="/sign-in" />;
+  }
+
+  return (
+    <Layout>
+      <Page />
+    </Layout>
+  );
+}
 
 function RouteWrapper({ layout: Layout, page: Page }) {
   return (
@@ -27,6 +41,7 @@ function RouteWrapper({ layout: Layout, page: Page }) {
 function router() {
     return (
     <Router>
+      <AuthProvider>
         <Routes>
         <Route
                path="/sign-in"
@@ -37,6 +52,7 @@ function router() {
               element={<RouteWrapper layout={SigninLayout} page={Singup} />}
             />
         </Routes>
+       </AuthProvider>
     </Router>
     );
 }
