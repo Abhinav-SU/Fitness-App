@@ -32,7 +32,7 @@ function Signin() {
     try {
       setLoading(true);
       await signIn(email, password);
-      navigate("/");
+      navigate("/profile");
     } catch (error) {
       setError(error.message);
     } finally {
@@ -44,7 +44,7 @@ function Signin() {
     try {
       setGoogleLoading(true);
       await signInWithGoogle();
-      navigate("/");
+      navigate("/profile");
     } catch (error) {
       setError(error.message);
     } finally {

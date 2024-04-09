@@ -10,9 +10,11 @@ import AuthProvider, { useAuth } from "./contexts/auth/authContext";
 
 
 import SigninLayout from "./layouts/SigninLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
 
 
 import Singup from "./pages/Signup";
+import Profile from "./pages/Profile";
 
 function PrivateRoute({ layout: Layout, page: Page }) {
   const { user } = useAuth();
@@ -50,6 +52,10 @@ function router() {
             <Route
               path="/sign-up"
               element={<RouteWrapper layout={SigninLayout} page={Singup} />}
+            />
+             <Route
+              path="/profile"
+              element={<PrivateRoute layout={DashboardLayout} page={Profile} />}
             />
         </Routes>
        </AuthProvider>
