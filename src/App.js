@@ -1,9 +1,9 @@
-import logo from "./logo.svg";
-import "./App.css";
-import Router from "./router";
+import React from "react";
+import "./App.css"; // Assuming you have some global styles
+import RouterComponent from "./router"; // Adjust the import path if necessary
 
 function App() {
-  return <Router />;
+  return <RouterComponent />;
 }
 
 export default App;

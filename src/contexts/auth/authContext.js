@@ -1,73 +1,67 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { auth, googleProvider } from "../../firebase.js";
-import {
-  signInWithPopup,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
-  updateEmail,
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { auth, googleProvider } from "../../firebase";
+
+import { 
+  signInWithPopup, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  sendPasswordResetEmail, 
+  onAuthStateChanged 
 } from "firebase/auth";
 
 const AuthContext = createContext();
 
-
 export function useAuth() {
- 
   return useContext(AuthContext);
 }
 
-function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+      setCurrentUser(user);
       setLoading(false);
     });
 
-    return unsubscribe;
+    return unsubscribe; // Unsubscribe on component unmount
   }, []);
 
-  function signIn(email, password) {
+  // Sign in with email and password
+  const signIn = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
-  }
+  };
 
-  function signInWithGoogle() {
+  // Sign in with Google
+  const signInWithGoogle = () => {
     return signInWithPopup(auth, googleProvider);
-  }
+  };
 
-  function signUp(email, password) {
+  // Sign up with email and password
+  const signUp = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
-  }
+  };
 
-  function firebaseSignOut() {
+  // Sign out
+  const firebaseSignOut = () => {
     return signOut(auth);
-  }
+  };
 
-  function resetPassword(email) {
+  // Send password reset email
+  const resetPassword = (email) => {
     return sendPasswordResetEmail(auth, email);
-  }
+  };
 
-  function updateUserEmail(email) {
-    return updateEmail(auth.currentUser, email);
-  }
-
-  function updatePassword(password) {
-    return user.updatePassword(password);
-  }
-
+  // The value provided to the context consumers
   const value = {
-    user,
+    currentUser,
     signIn,
     signInWithGoogle,
     signUp,
     firebaseSignOut,
-    updateUserEmail,
     resetPassword,
-    updatePassword,
   };
 
   return (
@@ -75,6 +69,4 @@ function AuthProvider({ children }) {
       {!loading && children}
     </AuthContext.Provider>
   );
-}
-
-export default AuthProvider;
+};

@@ -1,131 +1,130 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import Divider from "../components/Divider";
-import { useAuth } from "../contexts/auth/authContext.js";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Input from '../components/Input';
+import Button from '../components/Button';
+import Divider from '../components/Divider';
+import { useAuth } from '../contexts/auth/authContext';
 
-function Signin() {
-  const { signIn, signInWithGoogle, resetPassword } = useAuth();
+function SigninWrapper() {
   const navigate = useNavigate();
+  const auth = useAuth();
+  return <Signin navigate={navigate} auth={auth} />;
+}
 
-  const initialValues = { email: "", password: "" };
-  const [values, setValues] = useState(initialValues);
-  const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
+class Signin extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      loading: false,
+      googleLoading: false,
+      error: null,
+      message: null,
+    };
+  }
 
-  const handleChange = (e) => {
+  handleChange = (e) => {
     const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
+    this.setState({
+      [name]: value,
+    });
   };
 
-  const handleSubmit = async (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password } = values;
-
-    if (!email || !password) {
-      return setError("Please fill in all fields");
-    }
+    const { signIn } = this.props.auth;
+    const { email, password } = this.state;
+    this.setState({ loading: true, error: null, message: null });
 
     try {
-      setLoading(true);
       await signIn(email, password);
-      navigate("/profile");
+      this.props.navigate('/');
     } catch (error) {
-      setError(error.message);
-    } finally {
-      setGoogleLoading(false);
+      this.setState({ error: error.message, loading: false });
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  handleGoogleSignIn = async () => {
+    const { signInWithGoogle } = this.props.auth;
+    this.setState({ googleLoading: true, error: null, message: null });
+
     try {
-      setGoogleLoading(true);
       await signInWithGoogle();
-      navigate("/profile");
+      this.props.navigate('/');
     } catch (error) {
-      setError(error.message);
-    } finally {
-      setGoogleLoading(false);
+      this.setState({ error: error.message, googleLoading: false });
     }
   };
 
-  const handlePassword = async () => {
-    setMessage(null);
-    setError(null);
-
-    const { email } = values;
-
+  handlePassword = async () => {
+    const { resetPassword } = this.props.auth;
+    const { email } = this.state;
     if (!email) {
-      return setError("Please enter an email first");
+      this.setState({ error: "Please enter an email first" });
+      return;
     }
+
+    this.setState({ loading: true, message: null, error: null });
 
     try {
-      setLoading(true);
       await resetPassword(email);
-      setMessage("Successfully sent email reset link");
+      this.setState({ message: "Check your email for a reset link", loading: false });
     } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+      this.setState({ error: error.message, loading: false });
     }
   };
 
-  return (
-    <main className="lg:max-w-xl lg:p-0 lg:space-y-10 p-6 w-full bg-white space-y-6">
-      <h1 className="text-5xl">Sign In</h1>
-      <form className="space-y-6">
-        <Input
-          name="email"
-          type="email"
-          placeholder="Enter email address.."
-          label="Email address"
-          value={values.email}
-          handleChange={handleChange}
-        />
-        <div className="space-y-3">
+  render() {
+    const { email, password, loading, googleLoading, error, message } = this.state;
+
+    return (
+      <main className="lg:max-w-xl lg:p-0 lg:space-y-10 p-6 w-full bg-white space-y-6">
+        <h1 className="text-5xl">Sign In</h1>
+        <form onSubmit={this.handleSubmit} className="space-y-6">
+          <Input
+            name="email"
+            type="email"
+            placeholder="Enter email address.."
+            label="Email address"
+            value={email}
+            handleChange={this.handleChange}
+          />
           <Input
             name="password"
             type="password"
             placeholder="Enter password.."
             label="Password"
-            value={values.password}
-            handleChange={handleChange}
+            value={password}
+            handleChange={this.handleChange}
           />
-          <div
-            onClick={handlePassword}
-            className="flex justify-end text-sm text-primary cursor-pointer"
-          >
+          <div onClick={this.handlePassword} className="flex justify-end text-sm text-primary cursor-pointer">
             Forgot password?
           </div>
-        </div>
-        {message && <div className="text-primary font-semibold">{message}</div>}
-        {error && <div className="text-red-600">{error}</div>}
+          {message && <div className="text-primary font-semibold">{message}</div>}
+          {error && <div className="text-red-600">{error}</div>}
+          <Button
+            value="Sign In"
+            type="submit"
+            variant="primary"
+            loading={loading}
+            fullWidth
+          />
+        </form>
+        <Divider text="or" />
         <Button
-          value="Sign In"
-          type="submit"
-          variant="primary"
-         action={handleSubmit}
-         loading={loading}
+          value="Sign in with Google"
+          onClick={this.handleGoogleSignIn}
+          variant="frame"
+          loading={googleLoading}
           fullWidth
         />
-      </form>
-      <Divider text="or" />
-      <Button
-        value="Sign in with Google"
-        type="submit"
-        variant="frame"
-       action={handleGoogleSignIn}
-        loading={googleLoading}
-        fullWidth
-      />
-      <div className="text-primary text-center">
-        Want to become a member? <Link to="/sign-up">Sign Up</Link>
-      </div>
-    </main>
-  );
+        <div className="text-primary text-center">
+          Want to become a member? <Link to="/sign-up">Sign Up</Link>
+        </div>
+      </main>
+    );
+  }
 }
 
-export default Signin;
+export default SigninWrapper;
