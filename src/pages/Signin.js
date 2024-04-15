@@ -39,7 +39,7 @@ class Signin extends React.Component {
 
     try {
       await signIn(email, password);
-      this.props.navigate('/');
+      this.props.navigate('/profile');
     } catch (error) {
       this.setState({ error: error.message, loading: false });
     }
@@ -51,7 +51,7 @@ class Signin extends React.Component {
 
     try {
       await signInWithGoogle();
-      this.props.navigate('/');
+      this.props.navigate('/profile');
     } catch (error) {
       this.setState({ error: error.message, googleLoading: false });
     }
@@ -114,7 +114,7 @@ class Signin extends React.Component {
         <Divider text="or" />
         <Button
           value="Sign in with Google"
-          onClick={this.handleGoogleSignIn}
+          action={this.handleGoogleSignIn}
           variant="frame"
           loading={googleLoading}
           fullWidth

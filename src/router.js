@@ -11,10 +11,6 @@ import Profile from "./pages/Profile";
 //import Dashboard from "./pages/Dashboard";
 //import PrivateLayout from "./layouts/PrivateLayout";
 
-const PrivateRoute = ({ children }) => {
-  const { currentUser } = useAuth();
-
-
 
 
 function PrivateRoute({ layout: Layout, page: Page }) {
@@ -40,9 +36,6 @@ function RouteWrapper({ layout: Layout, page: Page }) {
 }
 
 
-  return currentUser ? children : <Navigate to="/sign-in" replace />;
-};
-
 function router() {
   return (
     <Router>
@@ -50,10 +43,10 @@ function router() {
         <Routes>
           <Route path="/sign-in" element={<SigninLayout><Signin /></SigninLayout>} />
           <Route path="/sign-up" element={<SigninLayout><Signup /></SigninLayout>} />
-          <Route
-              path="/profile"
-              element={<PrivateRoute layout={DashboardLayout} page={Profile} />}
-            />
+         <Route
+            path="/profile"
+            element={<PrivateRoute layout={DashboardLayout} page={Profile} />}
+          />
           {/* Uncomment or adjust the following route once Dashboard and PrivateLayout are defined */}
           {/* <Route path="/dashboard" element={<PrivateRoute><PrivateLayout><Dashboard /></PrivateLayout></PrivateRoute>} /> */}
           {/* Add more routes as needed */}
