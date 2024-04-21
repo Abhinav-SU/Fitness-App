@@ -31,8 +31,7 @@ function ChtBot() {
       const response = await axios.get(
         `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}`,
         {
-          headers: { "X-Api-Key": "E7vTFPNSAjbTc4DHiC5w7g==rpT42EcqscwbRri4" }, // Replace 'YOUR_API_KEY' with your actual API key
-        }
+          headers: { "X-Api-Key": "E7vTFPNSAjbTc4DHiC5w7g==rpT42EcqscwbRri4" }, 
       );
       if (response.status === 200) {
         setExerciseList(response.data);
@@ -48,7 +47,7 @@ function ChtBot() {
       const response = await axios.get(
         `https://api.api-ninjas.com/v1/nutrition?query=${query}`,
         {
-          headers: { "X-Api-Key": "E7vTFPNSAjbTc4DHiC5w7g==rpT42EcqscwbRri4" }, // Replace 'YOUR_API_KEY' with your actual API key
+          headers: { "X-Api-Key": "E7vTFPNSAjbTc4DHiC5w7g==rpT42EcqscwbRri4" }, 
         }
       );
       if (response.status === 200) {
