@@ -32,6 +32,7 @@ function ChtBot() {
         `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}`,
         {
           headers: { "X-Api-Key": "E7vTFPNSAjbTc4DHiC5w7g==rpT42EcqscwbRri4" }, 
+        }
       );
       if (response.status === 200) {
         setExerciseList(response.data);
