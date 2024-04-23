@@ -25,23 +25,6 @@ function ChtBot() {
     theme.userFontColor = "#ffffff";
   }
 
-  // Function to fetch exercises based on muscle
-  const fetchExercises = async (muscle) => {
-    try {
-      const response = await axios.get(
-        `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}`,
-        {
-          headers: { "X-Api-Key": "E7vTFPNSAjbTc4DHiC5w7g==rpT42EcqscwbRri4" }, 
-        }
-      );
-      if (response.status === 200) {
-        setExerciseList(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching exercises:", error);
-    }
-  };
-
   // Function to fetch nutrition data based on query
   const fetchNutritionData = async (query) => {
     try {
