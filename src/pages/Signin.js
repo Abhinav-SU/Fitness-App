@@ -33,6 +33,8 @@ function Signin() {
       setLoading(true);
       await signIn(email, password);
       navigate("/profile");
+      // navigate("/");
+
     } catch (error) {
       setError(error.message);
     } finally {
@@ -45,6 +47,7 @@ function Signin() {
       setGoogleLoading(true);
       await signInWithGoogle();
       navigate("/profile");
+      // navigate("/");
     } catch (error) {
       setError(error.message);
     } finally {
@@ -103,14 +106,14 @@ function Signin() {
         </div>
         {message && <div className="text-primary font-semibold">{message}</div>}
         {error && <div className="text-red-600">{error}</div>}
-        <Button
+        {/* <Button
           value="Sign In"
           type="submit"
           variant="primary"
          action={handleSubmit}
          loading={loading}
           fullWidth
-        />
+        /> */}
       </form>
       <Divider text="or" />
       <Button

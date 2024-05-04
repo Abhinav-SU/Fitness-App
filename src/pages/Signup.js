@@ -30,7 +30,7 @@ function Singup() {
     try {
       setLoading(true);
       await signUp(email, password);
-      navigate("/");
+      navigate("/profile");
     } catch (error) {
       setError(error.message);
     } finally {
